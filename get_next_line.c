@@ -22,7 +22,7 @@ static void	*ft_memchr(const void *data, int value, size_t size)
 	byte = (const unsigned char*) data;
 	end = byte + size;
 	while (byte != end)
-		if (*byte == (unsigned char) value)
+		if (*byte++ == (unsigned char) value)
 			return ((void*) byte);
 	return (NULL);
 }
@@ -96,9 +96,9 @@ char	*get_next_line(int fd)
 			newline = ft_memchr(buffer, '\n', received);
 			if (newline != NULL)
 			{
-				saved = received - (newline - buffer + 1);
-				line = join(line, buffer, newline - buffer + 1);
-				memmove(buffer, newline + 1, saved);
+				saved = received - (newline - buffer);
+				line = join(line, buffer, newline - buffer);
+				memmove(buffer, newline, saved);
 				break ;
 			}
 			line = join(line, buffer, received);

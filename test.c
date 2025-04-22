@@ -8,10 +8,7 @@ int main(int argc, char **argv)
 	int file = 0;
 	if (argc == 2)
 		file = open(argv[1], O_RDONLY);
-	for (;;) {
-		char *line = get_next_line(file);
-		if (line == NULL)
-			break;
+	for (char *line; (line = get_next_line(file));) {
 		printf("%s", line);
 		free(line);
 	}
