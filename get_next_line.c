@@ -6,102 +6,80 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:36:36 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/22 17:18:50 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:53:50 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-
 #include "get_next_line.h"
 
-static void	*ft_memchr(const void *data, int value, size_t size)
+static char	*ft_memchr(const void *data, int value, size_t length)
 {
-	const unsigned char	*byte;
-	const unsigned char	*end;
+	const unsigned char	*bytes;
 
-	byte = (const unsigned char*) data;
-	end = byte + size;
-	while (byte != end)
-		if (*byte++ == (unsigned char) value)
-			return ((void*) byte);
+	bytes = (const unsigned char *) data;
+	while (length-- > 0)
+		if (*bytes++ == (unsigned char) value)
+			return ((char *) bytes - 1);
 	return (NULL);
 }
 
 static size_t	ft_strlen(const char *string)
 {
-	size_t	length;
-
-	length = 0;
-	while (string != NULL && string[length] != '\0')
-		length++;
-	return (length);
+	if (string == NULL)
+		return (0);
+	return (ft_memchr(string, '\0', SIZE_MAX) - string);
 }
 
-static void*	ft_memcpy(void *target, const void *source, size_t length)
+static void	*ft_memcpy(void *dst, const void *src, size_t len)
 {
-	char		*target_bytes;
-	const char	*source_bytes;
-	size_t		index;
-
-	if (target != NULL && source != NULL)
-	{
-		target_bytes = (char*) target;
-		source_bytes = (const char*) source;
-		index = 0;
-		while (index < length)
-		{
-			target_bytes[index] = source_bytes[index];
-			index++;
-		}
-	}
-	return (target);
+	while (len-- > 0)
+		*((unsigned char *) dst + len) = *((unsigned char *) src + len);
+	return (dst);
 }
 
-static char	*join(char *a, const char *b, size_t b_length)
+static char	*append(char *target, const char *source, size_t source_length)
 {
-	size_t a_length = ft_strlen(a);
-	char *string = malloc(a_length + b_length + 1);
+	const size_t	target_length = ft_strlen(target);
+	char *const		string = malloc(target_length + source_length + 1);
+
 	if (string != NULL)
 	{
-		ft_memcpy(string, a, a_length);
-		ft_memcpy(string + a_length, b, b_length);
-		string[a_length + b_length] = '\0';
+		ft_memcpy(string, target, target_length);
+		ft_memcpy(string + target_length, source, source_length);
+		string[target_length + source_length] = '\0';
 	}
-	free(a);
+	free(target);
 	return (string);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int file)
 {
-	static char buffer[BUFFER_SIZE];
-	static size_t	saved;
-	char	*line = NULL;
-	char	*newline;
-	if (saved > 0)
+	static char		buffer[BUFFER_SIZE];
+	static ssize_t	begin;
+	static ssize_t	end;
+	char			*line;
+	char			*newline;
+
+	line = NULL;
+	while (1)
 	{
-		line = join(line, buffer, saved);
-		saved = 0;
-	}
-	ssize_t received = 1;
-	while (received > 0)
-	{
-		received = read(fd, buffer, BUFFER_SIZE);
-		if (received < 0)
+		newline = ft_memchr(buffer + begin, '\n', end - begin);
+		if (newline != NULL)
+		{
+			line = append(line, buffer + begin, newline - buffer - begin + 1);
+			begin = newline - buffer + 1;
+			return (line);
+		}
+		if (begin < end)
+			line = append(line, buffer + begin, end - begin);
+		begin = 0;
+		end = read(file, buffer, BUFFER_SIZE);
+		if (end == 0)
+			return (line);
+		if (end < 0)
 		{
 			free(line);
 			return (NULL);
-		}
-		if (received > 0)
-		{
-			newline = ft_memchr(buffer, '\n', received);
-			if (newline != NULL)
-			{
-				saved = received - (newline - buffer);
-				line = join(line, buffer, newline - buffer);
-				memmove(buffer, newline, saved);
-				break ;
-			}
-			line = join(line, buffer, received);
 		}
 	}
 	return (line);

@@ -3,13 +3,12 @@
 
 #include "get_next_line.h"
 
-int main(int argc, char **argv)
+int main()
 {
-	int file = 0;
-	if (argc == 2)
-		file = open(argv[1], O_RDONLY);
+	int line_number = 1;
+	int file = open("Makefile", O_RDONLY);
 	for (char *line; (line = get_next_line(file));) {
-		printf("%s", line);
+		printf("%02d %s", line_number++, line);
 		free(line);
 	}
 	close(file);
