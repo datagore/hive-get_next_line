@@ -3,10 +3,15 @@
 
 #include "get_next_line_bonus.h"
 
-int main()
+int main(int argc, char **argv)
 {
-	for (char *line; (line = get_next_line(0));) {
+	int file = 0;
+	if (argc == 2)
+		file = open(argv[1], O_RDONLY);
+	for (char *line; (line = get_next_line(file));) {
 		printf("%s", line);
 		free(line);
 	}
+	if (file != 0)
+		close(file);
 }
