@@ -6,14 +6,13 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:42:53 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/28 14:37:34 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:00:22 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
 
