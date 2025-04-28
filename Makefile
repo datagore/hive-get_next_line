@@ -3,7 +3,7 @@ HEADERS := get_next_line.h
 BONUS_SOURCES := test_bonus.c get_next_line_bonus.c get_next_line_utils_bonus.c
 BONUS_HEADERS := get_next_line_bonus.h
 CFLAGS  := -Wall -Wextra -Werror -ggdb \
-    -fsanitize=address -fsanitize=leak -fsanitize=undefined \
+-fsanitize=address -fsanitize=leak -fsanitize=undefined \
 
 mandatory: $(SOURCES) $(HEADERS)
 	$(CC) $(SOURCES) -o $@ $(CFLAGS)
