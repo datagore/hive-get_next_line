@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:36:04 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/29 10:42:14 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:37:11 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ size_t	read_buffer(t_buffer *b)
 {
 	char	*end;
 
-	if (b->tail <= 0)
+	if (b->tail <= b->head)
 	{
 		b->head = 0;
 		b->tail = read(b->file, b->data + b->head, BUFFER_SIZE);

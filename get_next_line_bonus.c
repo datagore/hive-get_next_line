@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:59:37 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/29 10:39:35 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:38:12 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_buffer	*get_buffer(t_buffer **list_head, int file)
 		return (NULL);
 	buffer->next = *list_head;
 	buffer->file = file;
+	buffer->head = 0;
 	buffer->tail = 0;
 	*list_head = buffer;
 	return (buffer);
