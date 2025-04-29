@@ -13,8 +13,8 @@ mandatory: test.c $(SOURCES) $(HEADERS)
 bonus: test.c $(BONUS_SOURCES) $(BONUS_HEADERS)
 	$(CC) test.c $(BONUS_SOURCES) -o $@ $(CFLAGS)
 
-mix: mix.c $(BONUS_SOURCES) $(BONUS_HEADERS)
-	$(CC) mix.c $(BONUS_SOURCES) -o $@ $(CFLAGS)
+mix: test_mix.c $(BONUS_SOURCES) $(BONUS_HEADERS)
+	$(CC) test_mix.c $(BONUS_SOURCES) -o $@ $(CFLAGS)
 
 clean:
 	$(RM) mandatory bonus mix
