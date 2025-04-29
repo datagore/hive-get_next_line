@@ -6,17 +6,17 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:59:37 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/28 16:46:12 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:39:35 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static t_buffer	*get_buffer(t_buffer **buffer_list, int file)
+static t_buffer	*get_buffer(t_buffer **list_head, int file)
 {
 	t_buffer	*buffer;
 
-	buffer = *buffer_list;
+	buffer = *list_head;
 	while (buffer != NULL && buffer->file != file)
 		buffer = buffer->next;
 	if (buffer != NULL)
@@ -24,10 +24,10 @@ static t_buffer	*get_buffer(t_buffer **buffer_list, int file)
 	buffer = malloc(sizeof(t_buffer));
 	if (buffer == NULL)
 		return (NULL);
-	buffer->next = *buffer_list;
+	buffer->next = *list_head;
 	buffer->file = file;
-	buffer->length = 0;
-	*buffer_list = buffer;
+	buffer->tail = 0;
+	*list_head = buffer;
 	return (buffer);
 }
 
@@ -47,25 +47,23 @@ static void	free_buffer(t_buffer **buffer, int file)
 
 char	*get_next_line(int file)
 {
-	static t_buffer	*buffer_list;
+	static t_buffer	*list_head;
 	char			*line;
 	size_t			length;
-	t_buffer		*buffer;
+	t_buffer		*b;
 
-	line = NULL;
-	buffer = get_buffer(&buffer_list, file);
-	if (buffer == NULL)
+	b = get_buffer(&list_head, file);
+	if (b == NULL)
 		return (NULL);
+	line = NULL;
 	length = 1;
-	while (length > 0)
+	while (length > 0 && !ft_strchr(line, '\n'))
 	{
-		length = read_buffer(buffer);
-		line = append(line, buffer->start, length);
-		buffer->start += length;
-		buffer->length -= length;
-		if (ft_strchr(line, '\n') != NULL)
-			return (line);
+		length = read_buffer(b);
+		line = append(line, b->data + b->head, length);
+		b->head += length;
 	}
-	free_buffer(&buffer_list, file);
+	if (length <= 0)
+		free_buffer(&list_head, file);
 	return (line);
 }

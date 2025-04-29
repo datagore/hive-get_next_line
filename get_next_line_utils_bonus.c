@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:01:43 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/28 15:01:48 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:43:53 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 char	*ft_strchr(const char *str, int chr)
 {
-	if (str != NULL)
-		while (*str != '\0' || chr == '\0')
-			if (*str++ == (unsigned char)chr)
-				return ((char *)str - 1);
+	while (str && (*str != '\0' || chr == '\0'))
+		if (*str++ == (unsigned char) chr)
+			return ((char *) str - 1);
 	return (NULL);
 }
 
@@ -28,39 +27,39 @@ void	*ft_memcpy(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char	*append(char *target, const char *source, size_t source_length)
+char	*append(char *dst, const char *src, ssize_t src_length)
 {
-	size_t	target_length;
+	size_t	dst_length;
 	char	*string;
 
-	if (source_length == 0)
-		return (target);
-	target_length = ft_strchr(target, '\0') - target;
-	string = malloc(target_length + source_length + 1);
-	if (string != NULL)
+	if (src_length <= 0)
+		return (dst);
+	dst_length = ft_strchr(dst, '\0') - dst;
+	string = malloc(dst_length + src_length + 1);
+	if (string)
 	{
-		ft_memcpy(string, target, target_length);
-		ft_memcpy(string + target_length, source, source_length);
-		string[target_length + source_length] = '\0';
+		ft_memcpy(string, dst, dst_length);
+		ft_memcpy(string + dst_length, src, src_length);
+		string[dst_length + src_length] = '\0';
 	}
-	free(target);
+	free(dst);
 	return (string);
 }
 
-size_t	read_buffer(t_buffer *buffer)
+size_t	read_buffer(t_buffer *b)
 {
 	char	*end;
 
-	if (buffer->length <= 0)
+	if (b->tail <= 0)
 	{
-		buffer->start = buffer->data;
-		buffer->length = read(buffer->file, buffer->data, BUFFER_SIZE);
-		if (buffer->length <= 0)
+		b->head = 0;
+		b->tail = read(b->file, b->data + b->head, BUFFER_SIZE);
+		if (b->tail <= 0)
 			return (0);
-		buffer->data[buffer->length] = '\0';
+		b->data[b->tail] = '\0';
 	}
-	end = ft_strchr(buffer->start, '\n');
+	end = ft_strchr(b->data + b->head, '\n');
 	if (end == NULL)
-		return (buffer->length);
-	return (end + 1 - buffer->start);
+		return (b->tail - b->head);
+	return (end + 1 - (b->data + b->head));
 }
