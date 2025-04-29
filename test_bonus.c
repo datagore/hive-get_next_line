@@ -8,9 +8,16 @@ int main(int argc, char **argv)
 {
 	// Open all files passed on the command line.
 	int file_count = argc - 1;
-	int files[file_count];
-	for (int i = 0; i < file_count; i++)
-		files[i] = open(argv[i + 1], O_RDONLY);
+	int files[file_count + 1];
+	if (argc > 1) {
+		for (int i = 0; i < file_count; i++)
+			files[i] = open(argv[i + 1], O_RDONLY);
+
+	// Use stdin if no files were passed.
+	} else {
+		files[0] = 0;
+		file_count = 1;
+	}
 
 	// Keep track of how many files are finished.
 	int finished_count = 0;
