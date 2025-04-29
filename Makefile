@@ -1,23 +1,20 @@
-SOURCES := get_next_line.c get_next_line_utils.c
+SOURCES := test.c get_next_line.c get_next_line_utils.c
 HEADERS := get_next_line.h
-BONUS_SOURCES := get_next_line_bonus.c get_next_line_utils_bonus.c
+BONUS_SOURCES := test_bonus.c get_next_line_bonus.c get_next_line_utils_bonus.c
 BONUS_HEADERS := get_next_line_bonus.h
 CFLAGS  := -Wall -Wextra -Werror -ggdb \
 # -fsanitize=address -fsanitize=leak -fsanitize=undefined \
 
-all: mandatory bonus mix
+all: mandatory bonus
 
-mandatory: test.c $(SOURCES) $(HEADERS)
-	$(CC) test.c $(SOURCES) -o $@ $(CFLAGS)
+mandatory: $(SOURCES) $(HEADERS)
+	$(CC) $(SOURCES) -o $@ $(CFLAGS)
 
-bonus: test.c $(BONUS_SOURCES) $(BONUS_HEADERS)
-	$(CC) test.c $(BONUS_SOURCES) -o $@ $(CFLAGS)
-
-mix: test_mix.c $(BONUS_SOURCES) $(BONUS_HEADERS)
-	$(CC) test_mix.c $(BONUS_SOURCES) -o $@ $(CFLAGS)
+bonus: $(BONUS_SOURCES) $(BONUS_HEADERS)
+	$(CC) $(BONUS_SOURCES) -o $@ $(CFLAGS)
 
 clean:
-	$(RM) mandatory bonus mix
+	$(RM) mandatory bonus
 
 re: clean all
 
