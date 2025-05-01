@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:42:53 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/29 10:27:33 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:08:04 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+
+# ifndef MAX_FILES
+#  define MAX_FILES 50
+# endif
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1000

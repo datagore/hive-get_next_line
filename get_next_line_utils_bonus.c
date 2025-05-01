@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:01:43 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/29 12:37:45 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:04:31 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ char	*append(char *dst, const char *src, ssize_t src_length)
 	return (string);
 }
 
-size_t	read_buffer(t_buffer *b)
+size_t	read_buffer(t_buffer *buf)
 {
 	char	*end;
 
-	if (b->tail <= b->head)
+	if (buf->tail <= buf->head)
 	{
-		b->head = 0;
-		b->tail = read(b->file, b->data + b->head, BUFFER_SIZE);
-		if (b->tail <= 0)
+		buf->head = 0;
+		buf->tail = read(buf->file, buf->data + buf->head, BUFFER_SIZE);
+		if (buf->tail <= 0)
 			return (0);
-		b->data[b->tail] = '\0';
+		buf->data[buf->tail] = '\0';
 	}
-	end = ft_strchr(b->data + b->head, '\n');
+	end = ft_strchr(buf->data + buf->head, '\n');
 	if (end == NULL)
-		return (b->tail - b->head);
-	return (end + 1 - (b->data + b->head));
+		return (buf->tail - buf->head);
+	return (end + 1 - (buf->data + buf->head));
 }
