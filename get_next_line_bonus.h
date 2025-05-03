@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:59:56 by abostrom          #+#    #+#             */
-/*   Updated: 2025/05/01 13:08:44 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:20:09 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct buffer
 	ssize_t			head;
 	ssize_t			tail;
 	int				file;
-	struct buffer	*next;
 }	t_buffer;
 
 char	*get_next_line(int fd);
